@@ -2,36 +2,35 @@
 ; Fabiano Salles
 ; https://programmingdrops.com
 
-use16 						; 16bit bin (dos COM)
+format binary       ; flat binary file format
+use16 				; 16bit file
 org	0x0100
 
+
 vars:
-    mesasge db 'Hello world',0
-    current_row db 0
-    current_col db 0
+    message db 'Hello world!'
 
+
+; -------------------------------------------------------
+;  CODE
+; -------------------------------------------------------
 start:
-    mov ah, 13h             ; wirte string bios function
-    mov al, 00h             ; parameter write mode
-    mov bh, 00h             ; page number
-;    mov bl, 0011_1011b     ; text color attribute
-    mov cx, 12              ; number of characters in string
-    mov dl, 1               ; column to start writing 
-    mov dh, 1               ; row to start writing
+    cli                     ; disable interrups
+    mov ax, cs
+    mov ds, ax              ; code,data,stack share same segment 
+    mov ss, ax
+    xor sp, sp
+    sti                     ; restore interrupts
 
-    push cs
-    pop es
-    mov bp, vars+1            ; pointer to string to be written     
-    int 10h                 ; call bios function
-        
-    ;    mov ah, 4ch             ; stop current program bios function
-    ;    int 21h                 ; call the bios function
-
-
-;    mov ah, 0Ah
-;    mov al, 'x'build
-;    mov cx, 05h
-;    int 10h
+    mov bp, message
+    mov bh, 0               ; page number
+    mov cx, 0ch              ; number of chars in mdiressages
+    mov bl, 0fh             ; color (white color on black bg)     
+    mov ah, 13h             ; AH = function number AL=write mode
+    mov al, 01h  
+    mov dh, 02h              ; DH = row, HL = col
+    mov dl, 02h    
+    int 10h                 ; INT 10h/AH=13 - write character and attribute at cursor position.
 
     mov ah, 4ch             ; stop current program bios function
     int 21h                 ; call the bios function
