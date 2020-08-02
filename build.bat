@@ -1,6 +1,17 @@
 @echo off
-if exist bin (
-    rmdir bin /q /s
-)
-mkdir bin
-fasm pong.asm bin/pong.com
+
+:check_parameters
+    if [%1] == [] (
+        echo [Source file not informed. Usage: build <program_name>] 
+        exit /b 1
+    )
+
+:clean_bin_directory
+    if exist bin (
+        rmdir bin /q /s
+    )
+    mkdir bin
+
+:assemble
+    fasm %1.asm bin/%1.com
+    exit /b %errorlevel%
