@@ -25,7 +25,7 @@ You can find two simple batch scripts to automate the assmbly and execution of a
 
  script   | usage | description |
 --------- |-------|-------------|
-build.bat |build <filename> | builds `fiename.asm` program inside ./bin folder
+build.bat |build <filename> | builds `filename.asm` program inside ./bin folder
 run.bat   |run <filename>   | runs `filename.com` in a new instance of dosbox
 
 Is important to note that this only will work if both `fasm` and `dosbox` is somewhere in your `path` environment variable.
