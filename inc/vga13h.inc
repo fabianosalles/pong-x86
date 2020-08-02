@@ -17,8 +17,8 @@ VGA_WORDS_COUNT			equ 0x7D00  ; number of words in display memory (320 * 200 / 2
 USE_VSYNC				equ 0		; 0=disabled, 1=enabled 
 SCREEN_W			    equ 320
 SCREEN_H			    equ 200
-MAXX					equ 320-1
-MAXY					equ 200-1
+MAX_X					equ SCREEN_W-1
+MAX_Y					equ SCREEN_H-1
 
 ; default color pallete
 COLOR_BLACK			equ 0x00
@@ -33,9 +33,10 @@ COLOR_LDGRAY		equ 0x08
 COLOR_LBLUE			equ 0x09
 COLOR_LGREEN		equ 0x0A
 COLOR_LCYAN			equ 0x0B
-COLOR_LMAGENTA		equ 0x0C	 
-COLOR_YELLOW		equ 0x0D
-COLOR_WHITE			equ 0x0E
+COLOR_SALMON		equ 0x0C	
+COLOR_LMAGENTA		equ 0x0D 
+COLOR_YELLOW		equ 0x0E
+COLOR_WHITE			equ 0x0F
 
 ;
 ; assuming cs = ds = ss = sp = ax
@@ -104,29 +105,37 @@ macro clear_screen color{
     call clear_back_buffer
 }
 
-macro set_draw_color color{
-    mov 	al, color
-}			
+macro put_pixel x, y, color{
+    mov di, x
+    mov bx, y
+    mov al, color
+    call set_pixel
+}
         
-macro vert_line x, y, l{    
+macro vert_line x, y, l, color{
     mov		di, x
     mov 	bx, y
     mov 	cx, l
+    mov     al, color    
     call 	line_v
 }
 
-macro horiz_line x, y, l{
+macro horiz_line x, y, l, color{
     mov 	di, x
     mov 	bx, y
     mov		cx, l
+    mov     ax, color
     call	line_h
 }
 
-macro fill_rect x, y, w, h{
+
+macro rect x, y, w, h, color{
     mov		di, x
     mov		bx, y
     mov		cx, w
     mov    	dx, h
+    mov     ax, color
     call	fill_rect
 }
 
+include 'vga13h.asm'

@@ -65,7 +65,7 @@ line_v:
     add     di, bx 
 .loop: 
     mov     byte[es:di],al 
-    add     di,320 
+    add     di, SCREEN_W 
     loop    .loop 
     popa 
     ret 
@@ -73,8 +73,8 @@ line_v:
 ;------------------------------------------------------------------------ 
 ; fill_rect - Renders color filled recatngle into offscreen buffer 
 ; Input: 
-;   BX = y 
 ;   DI = x 
+;   BX = y 
 ;   CX = width 
 ;   DX = height 
 ;   AL = color 
@@ -82,7 +82,7 @@ line_v:
 ;------------------------------------------------------------------------ 
 fill_rect: 
     pusha 
-    mov     si,320 
+    mov     si, SCREEN_W 
     sub     si, cx  ; SI = offset to next scan line start 
     shl     bx, 6 
     add     di, bx 
