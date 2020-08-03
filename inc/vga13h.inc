@@ -14,7 +14,7 @@ OFFSCREEN_SEGMENT		equ fs
 VGA_BASE				equ 0xA000
 VGA_SEGMENT				equ gs
 VGA_WORDS_COUNT			equ 0x7D00  ; number of words in display memory (320 * 200 / 2) 	
-USE_VSYNC				equ 0		; 0=disabled, 1=enabled 
+USE_VSYNC				equ 1		; 0=disabled, 1=enabled 
 SCREEN_W			    equ 320
 SCREEN_H			    equ 200
 MAX_X					equ SCREEN_W-1
@@ -83,11 +83,11 @@ if USE_VSYNC    ; Wait for vertical reset
     .vend:  
         in   al, dx 
         test al, 0x08 
-        jz   vend 
+        jz   swap_buffers.vend 
     .vres:  
         in   al, dx 
         test al, 0x08 
-        jnz  vres 
+        jnz  swap_buffers.vres 
 end if
  
 	rep  movsw 	 ; copy offscreen buffer into video memory 
