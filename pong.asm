@@ -13,8 +13,10 @@ use16 						; 16bit bin (dos COM)
 org	0x0100	
 jmp start
 
+include 'macro/struct.inc'
 include 'inc/vga13h.inc'
-include 'game.inc'
+include 'inc/game.inc'
+
 
 start:
 	cli 					; disable interrupts 
@@ -28,6 +30,7 @@ start:
 	sti						; we'e done so, reenable interrupts
 main:
 	call init_graphics      			; init VGA mode 13h
+	call init_game						; init game objects
 	; game main loop 
 	.loop:								
 		clear_screen COLOR_BLACK

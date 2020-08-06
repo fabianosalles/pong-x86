@@ -138,4 +138,4 @@ macro rect x, y, w, h, color{
     call	fill_rect
 }
 
-include 'vga13h.asm'
+include '../src/vga13h.asm'
