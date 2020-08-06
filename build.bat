@@ -14,4 +14,7 @@
 
 :assemble
     fasm %1.asm bin/%1.com
+    if %errorlevel% equ 0 (
+        echo %1 built with success!
+    )
     exit /b %errorlevel%

@@ -4,14 +4,25 @@
     "version": "2.0.0",
     "tasks": [
         {
-            "label": "build",
+            "label": "build ",
             "type": "shell",
-            "command": "${workspaceFolder}/build"
+            "command": "${workspaceFolder}/build.bat",
+            "args": [
+                "${fileBasenameNoExtension}"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
         },
         {
             "label": "run",
             "type": "shell",
-            "command": "${workspaceFolder}/run",
+            "command": "${workspaceFolder}/run.bat",
+            "args": [
+                "${fileBasenameNoExtension}"
+            ],
             "runOptions": {
                 "instanceLimit": 1,
                 "reevaluateOnRerun": true
