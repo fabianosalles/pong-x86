@@ -8,7 +8,10 @@
 
 :build
     call build.bat %1
-    if %errorlevel% neq 0 goto :eof
+    if %errorlevel% neq 0 (
+        echo Cannot not run %1.
+        goto :eof
+    )
 
 rem starts dosbox with the c: driver pointing to the ./bin directory
 rem and runs the program from there
