@@ -38,7 +38,7 @@ main:
 		; todo
 		; 1. capture input
 		; 2. update state
-		; 3. draw game
+		call update_game
 		call draw_game
 
 		call swap_buffers
