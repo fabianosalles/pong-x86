@@ -39,9 +39,18 @@ COLOR_YELLOW		equ 0x0E
 COLOR_WHITE			equ 0x0F
 
 ;
+; module data
+;
+_orig_video_mode db ?    ; orginal video mode 
+
+;
 ; assuming cs = ds = ss = sp = ax
 ; 
 init_graphics:
+   mov ah, 0xf                  ; get current video mode function
+   int 0x10
+   mov al, [_orig_video_mode]   ; save the current video mode
+
    add	ax, OFFSCREEN_BASE  	; Offscreen buffer segment 
    mov	OFFSCREEN_SEGMENT, ax   ;
    mov	ax, VGA_BASE      		; Video memory segment 
@@ -51,6 +60,12 @@ init_graphics:
    int	0x10      				; invoke BIOS VIDEO service 
    ret
 
+exit_graphics:
+    push ax
+    mov ah, [_orig_video_mode]   ; gets back to original video mode
+    int 0x10
+    pop ax        
+    ret
 
 ;
 ; clears the offscreen buffer
