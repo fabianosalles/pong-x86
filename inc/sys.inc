@@ -1,6 +1,9 @@
 ;
-; system routines
+; Misc system routines
+; Fabiano Salles, 2020
+; http://programmingdrops.com
 ;
+
 
 macro print text, width{
     ; mov ah, 03h             ; ah = get cursor position and size bios function (results in dx)

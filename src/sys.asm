@@ -1,4 +1,5 @@
-
+; Fabiano Salles, 2020
+; http://programmingdrops.com
 
 ; prints a text to the console using BIOS interrupt
 ; Input: 
