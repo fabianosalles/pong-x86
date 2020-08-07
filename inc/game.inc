@@ -24,36 +24,39 @@ struct Ball
     color   db ?
 ends
 
+struct Player
+    pos     Vector
+    size    Size
+    color   db ?
+ends
+
 ;
 ; Game data
 ;
-ball Ball <50,50>,<5,5>,COLOR_WHITE
+ball Ball <50,50>, <5,5>, COLOR_WHITE
+player Player <0,0>, <5,20>, COLOR_WHITE
+cpu Player <0,0>, <5,20>, COLOR_WHITE
 
 init_game:
-    call ball_reset 
+    call ball_reset
+    call player_reset 
     ret
 
 draw_game:
-    pusha
-    
+    pusha    
     ; draw middle cross dark line
     vert_line SCREEN_W/2, 0, SCREEN_H, COLOR_DGRAY
     horiz_line 0, SCREEN_H/2, SCREEN_W, COLOR_DGRAY
     
-    ; call ball_draw
-    rect [ball.pos.x], [ball.pos.y], [ball.size.w], [ball.size.w], word [ball.color]
+    rect [ball.pos.x], [ball.pos.y], [ball.size.w], [ball.size.w], word [ball.color]    ; ball_draw
+    rect [player.pos.x], [player.pos.y], [player.size.w], [player.size.h], word [player.color] ; draw player 1
+    rect [cpu.pos.x], [cpu.pos.y], [cpu.size.w], [cpu.size.h], word [cpu.color] ; draw cpu player
 
-    popa
-    ret
-
-ball_draw:
-    pusha
-    rect ball.pos.x, ball.pos.y, ball.size.w, ball.size.h, ball.color
     popa
     ret
 
 ;
-; Center ball on stage and reset its color to white
+; center ball on stage and reset its color to white
 ;
 ball_reset:
     pusha
@@ -70,5 +73,24 @@ ball_reset:
         shr bx, 1
         sub ax, bx
         mov [ball.pos.y], ax
+    popa
+    ret
+
+;
+; center players on stage and reset its color
+;
+player_reset:
+    pusha
+    mov [player.color], COLOR_WHITE
+    mov [player.pos.x], 2
+    .center_y:
+        mov ax, (SCREEN_H/2)
+        mov bx, [player.size.h]
+        shr bx, 1
+        sub ax, bx
+        mov [player.pos.y], ax
+    mov [cpu.color], COLOR_WHITE
+    mov [cpu.pos.x], (SCREEN_W-7) 
+    mov [cpu.pos.y], ax
     popa
     ret
