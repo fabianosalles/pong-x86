@@ -10,6 +10,9 @@ jmp start
 
 include 'inc/vga13h.inc'
 
+vars:
+   frames  dw 0
+
 start:
    cli                      ; disable interrups
    mov	ax, cs              ; code,data,stack share same segment 
@@ -53,4 +56,10 @@ main:
     rect 288, 20, 20, 20, 15
 
     call swap_buffers
-    jmp main
+    inc [frames]
+    cmp [frames], 120   
+    jl main
+exit:
+    call exit_graphics
+    mov ah, 4ch             ; stop current program bios function
+    int 21h                 ; call the bios function
