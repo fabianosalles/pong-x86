@@ -2,7 +2,7 @@
 
 #### A simple 16 bits Pong game in x86 assembly
 
-The purpose of this project is to wite a simple pong game to run in 8086 machines.
+The purpose of this project is to write a simple pong game to run in 8086 machines.
 
 # Requirements
 

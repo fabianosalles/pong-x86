@@ -62,7 +62,7 @@ draw_game:
 ball_reset:
     pusha
     mov [ball.color], COLOR_WHITE
-    mov [ball.speed.x], 0
+    mov [ball.speed.x], 4
     mov [ball.speed.y], 7
     .center_x:
         mov ax, (SCREEN_W/2)
@@ -103,20 +103,26 @@ player_reset:
 ;
 update_game:  
     call update_ball_state 
+    call check_ball_collision
     ret
-
 
 update_ball_state:
     pusha
-    .move:
-        mov ax, [ball.speed.x]
-        mov bx, [ball.speed.y]
-        add [ball.pos.x], ax
-        add [ball.pos.y], bx
-    .collisions:
+    mov ax, [ball.speed.x]
+    mov bx, [ball.speed.y]
+    add [ball.pos.x], ax
+    add [ball.pos.y], bx
+    popa
+    ret
+
+check_ball_collision:
+    pusha   
+    mov ax, [ball.speed.x]
+    mov bx, [ball.speed.y]
+    .check_y:
         ; if (ball.pos.y < 0 || ball.pos.y >= screen_h-ball.size.h) { ball.speed.y *= -1 }  
         cmp [ball.pos.y], 0
-        jl  update_ball_state.invert_y
+        jl  check_ball_collision.invert_y
         mov ax, SCREEN_H
         sub ax, [ball.size.h]
         cmp [ball.pos.y], ax
@@ -129,9 +135,11 @@ update_ball_state:
         jge @f
         mov [ball.pos.y], 0
         @@:
-        cmp [ball.pos.y], ax
+        cmp [ball.pos.y], SCREEN_H
         jle @f
-        mov [ball.pos.y], ax
+        mov [ball.pos.y], SCREEN_H
         @@:
+    .chech_x:
+        ; if (ball.pos.x < 0 || ball.pos.x > SCREEN_HEIGHT) { mark point }
     popa
     ret
